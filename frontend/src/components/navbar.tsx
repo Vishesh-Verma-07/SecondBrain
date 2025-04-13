@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ThemeToggle } from './themeToggle';
 import { Menu, X } from 'lucide-react';
-import { Button } from './Button';
+import { Button } from './ui/Button';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

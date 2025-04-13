@@ -1,7 +1,7 @@
-import BrainIcon from "../../icons/Brain";
-import TwitterIcon from "../../icons/Twitter";
-import YoutubeIcon from "../../icons/Youtube";
-import { SideBarItem } from "./SideBarItem";
+import BrainIcon from "../icons/Brain";
+import TwitterIcon from "../icons/Twitter";
+import YoutubeIcon from "../icons/Youtube";
+import { SideBarItem } from "./ui/SideBarItem";
 
 
 export function Sidebar(){

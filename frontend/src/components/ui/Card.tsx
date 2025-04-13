@@ -1,5 +1,5 @@
 import ShareIcon from "../../icons/Shareicon";
-import TweetComponent from "./TweetComponent";
+import TweetComponent from "../TweetComponent";
 
 interface CardProps { 
     title: string, 

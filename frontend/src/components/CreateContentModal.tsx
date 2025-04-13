@@ -1,6 +1,6 @@
-import CrossIcon from "../../icons/CrossIcon";
-import Button from "./Button2";
-import {Input} from "./InputComponent";
+import CrossIcon from "../icons/CrossIcon";
+import Button from "./ui/Button2";
+import {Input} from "./ui/InputComponent";
 
 
 export function CreateContentModal({open, onClose} : {open : boolean, onClose: () => void}){

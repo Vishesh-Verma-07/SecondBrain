@@ -1,9 +1,9 @@
 import { Button } from "../components/ui/Button";
 import { ThemeProvider } from "../components/ui/themeProvider";
-import { Navbar } from "../components/ui/navbar";
+import { Navbar } from "../components/navbar";
 import { FeatureCard } from "../components/ui/featureCard";
-import { Testimonial } from "../components/ui/testimonial";
-import { Footer } from "../components/ui/footer";
+import { Testimonial } from "../components/testimonial";
+import { Footer } from "../components/footer";
 
 
 import { 

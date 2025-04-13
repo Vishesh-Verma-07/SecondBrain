@@ -3,7 +3,7 @@ import Button from "./Button2";
 import {Input} from "./InputComponent";
 
 
-export function CreateContentModal({open, onClose}){
+export function CreateContentModal({open, onClose} : {open : boolean, onClose: () => void}){
 
     return <div>
         {open && <div className="w-screen h-screen bg-[rgba(0,0,0,0.8)] fixed top-0 left-0 flex justify-center">
@@ -14,8 +14,8 @@ export function CreateContentModal({open, onClose}){
                         
                     </div>
                     <div>
-                        <Input placeholder = {"Title"}/>
-                        <Input placeholder = {"link"}/>
+                        <Input placeholder = {"Title"} onChange={() => {}}/>
+                        <Input placeholder = {"link"} onChange={() => {}}/>
                     </div>
                     <div className="flex justify-center">
                         <Button variant="primary" text="submit" />

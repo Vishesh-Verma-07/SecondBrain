@@ -1,6 +1,6 @@
 
-import Button from "../components/ui/Button"
 import {Input} from "../components/ui/InputComponent"
+import Button from "../components/ui/Button2"
 
 export function Signin(){
     return <div className="h-screen w-screen bg-gray-200 flex justify-center items-center">

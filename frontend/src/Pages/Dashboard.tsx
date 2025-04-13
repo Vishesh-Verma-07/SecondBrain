@@ -1,4 +1,4 @@
-import Button from '../components/ui/Button'
+import Button from '../components/ui/Button2'
 import { Card } from '../components/ui/Card'
 import { CreateContentModal } from '../components/ui/CreateContentModal'
 import { Sidebar } from '../components/ui/SideBar'

@@ -1,5 +1,5 @@
 import CrossIcon from "../../icons/CrossIcon";
-import Button from "./Button";
+import Button from "./Button2";
 import {Input} from "./InputComponent";
 
 

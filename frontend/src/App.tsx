@@ -3,20 +3,28 @@ import Dashboard from "./Pages/Dashboard"
 import { Signup } from "./Pages/Singup"
 import { Signin } from "./Pages/Singin"
 import Home from "./Pages/Home"
-import Layout from "./Layout"
+import { ThemeProvider } from "./components/ui/themeProvider"
+import { Toaster } from "./components/ui/toaster"
 
 
 function App(){
-  return <BrowserRouter>
-    <Routes>
-      <Route path = "/" element={<Layout />} >
-        <Route index element={<Home />} />
-        <Route path = "/signup" element={<Signup />} />
-        <Route path = "/signin" element={<Signin />} />
-        <Route path = "/Dashboard" element={<Dashboard />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+  return (
+    // <QueryClientProvider client={queryClient}>
+       <ThemeProvider defaultTheme="dark">
+        {/* <TooltipProvider> */}
+          <Toaster />
+        <BrowserRouter>
+          <Routes>
+              <Route index element={<Home />} />
+              <Route path = "/signup" element={<Signup />} />
+              <Route path = "/signin" element={<Signin />} />
+              <Route path = "/Dashboard" element={<Dashboard />} />
+          </Routes>
+        </BrowserRouter>
+        {/* </TooltipProvider> */}
+    </ThemeProvider>
+  // </QueryClientProvider>
+  )
 
 }
 

@@ -1,66 +1,79 @@
-import ShareIcon from "../../icons/Shareicon";
-import TweetComponent from "../TweetComponent";
+import * as React from "react"
 
-interface CardProps { 
-    title: string, 
-    link: string, 
-    type: "twitter" | "youtube",
-}
+import { cn } from "../../lib/utils"
 
-export function Card({title, link, type} : CardProps){
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
 
-    return (
-        <div
-          className={`p-7 bg-white max-w-96 rounded-md shadow-md outline-slate-200 border  border-slate-200 ${
-            type === "youtube" ? "row-span-2" : "row-span-3"
-          }`}
-        >
-          <div className="flex justify-between">
-            <div className="flex items-center pr-4">
-              <div className="text-gray-500">
-                <ShareIcon />
-              </div>
-              {title}
-            </div>
-            <div className="flex items-center">
-              <div className="pr-2 text-gray-500">
-                <a href={link}>
-                  <ShareIcon />
-                </a>
-              </div>
-              <div className="text-gray-500">
-                <ShareIcon />
-              </div>
-            </div>
-          </div>
-          <div className="pt-4 ">
-            {type == "youtube" && (
-              <iframe
-                className="w-full  h-40"
-                src={link.replace("watch", "embed").replace("?v=", "/")}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
-            )}
-            {
-              type == "twitter" && (
-                <div className="w-full pl-0.5 pr-0.5">
-                  <TweetComponent
-                    tweetId={link.replace("https://twitter.com/user/status/", "")}
-                  />
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
 
-                </div>
-              )
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
 
-              // <TweetComponent tweetId="1875218603966136424"/>
-            }
-          </div>
-      </div>
-    );
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
 
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
 
-    
-}
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

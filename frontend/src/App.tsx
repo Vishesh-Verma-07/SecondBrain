@@ -8,6 +8,8 @@ import { ThemeProvider } from "./components/ui/themeProvider"
 import { Toaster } from "./components/ui/toaster"
 import { Toaster as Sonner } from "./components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Share from "./Pages/Share"
+import NoteDetails from "./Pages/NoteDetails"
 
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ function App(){
                 <Route path = "/signup" element={<Signup />} />
                 <Route path = "/signin" element={<Signin />} />
                 <Route path = "/Dashboard" element={<Dashboard />} />
+                <Route path="/share/:id" element={<Share />} />
+                <Route path="/note/:id" element={<NoteDetails />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>

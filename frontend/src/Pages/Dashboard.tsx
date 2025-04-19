@@ -215,39 +215,45 @@ export default function Dashboard() {
             {/* Brain entries */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredEntries.map((entry) => (
-                <Card key={entry.id} className="transition-all hover:shadow-md">
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between">
-                      <div className="text-xs px-2 py-1 rounded bg-muted inline-flex items-center">
-                        {entry.source}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {entry.date}
-                      </div>
-                    </div>
-                    <CardTitle className="mt-2">{entry.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground line-clamp-3">{entry.excerpt}</p>
-                  </CardContent>
-                  <CardFooter className="flex justify-between pt-0">
-                    <div className="flex gap-2">
-                      {entry.tags.map((tag) => (
-                        <div key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-                          {tag}
+                <Link to={`/note/${entry.id}`}>
+                  <Card key={entry.id} className="transition-all hover:shadow-md">
+                    <CardHeader className="pb-3">
+                      <div className="flex justify-between">
+                        <div className="text-xs px-2 py-1 rounded bg-muted inline-flex items-center">
+                          {entry.source}
                         </div>
-                      ))}
-                    </div>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      title="Share" 
-                      onClick={() => openShareDialog(entry.title, "note")}
-                    >
-                      <Share className="h-4 w-4" />
-                    </Button>
-                  </CardFooter>
-                </Card>
+                        <div className="text-xs text-muted-foreground">
+                          {entry.date}
+                        </div>
+                      </div>
+                      <CardTitle className="mt-2">{entry.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground line-clamp-3">{entry.excerpt}</p>
+                    </CardContent>
+                    <CardFooter className="flex justify-between pt-0">
+                      <div className="flex gap-2">
+                        {entry.tags.map((tag) => (
+                          <div key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+                            {tag}
+                          </div>
+                        ))}
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        title="Share" 
+                        onClick={(e) => {
+                              e.preventDefault();
+                              openShareDialog(entry.title, "note");
+                            }
+                          }
+                      >
+                        <Share className="h-4 w-4" />
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </Link>
               ))}
             </div>
 

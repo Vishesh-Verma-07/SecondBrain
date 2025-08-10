@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { Search, Share, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -30,76 +30,20 @@ import { ThemeToggle } from "../components/themeToggle";
 import { NewNoteDialog } from "../components/NewNoteDialog";
 import { NewCollectionDialog } from "../components/NewCollectionDialog";
 import { ShareDialog } from "../components/ShareDialog";
-import axios from "axios";
+import { useBrainEntries } from "../hooks/useBrainEntries";
+
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [currentShareItem, setCurrentShareItem] = useState({ title: "", type: "note" as "note" | "collection" });
   const [sidebar, setSidebar]  = useState(true);
-  const [brainEntries, setBrainEntries] = useState([] as any[]);
+  
+  const {data: brainEntries = [], isLoading, isError, error} = useBrainEntries();
 
-  const URL = import.meta.env.VITE_BACKEND_URL ;
+  if (isLoading) return <p>Loading entries...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
 
-
-  // Fetch brain entries from the backend
- // Fetch brain entries from the backend
-  interface BrainEntry {
-  id: string | number;
-  title: string;
-  source: string;
-  date: string;
-  excerpt: string;
-  tags: string[];
-}
-
-  interface GetAllResponse {
-    status: string;
-    message?: string;
-    data: {
-      _id: string;
-      title: string;
-      link: string;
-      createdAt: string;
-      content: string;
-      tags: { title: string }[];
-    }[];
-  }
-
-
-const fetchBrainEntries = async () => {
-  try {
-    const response = await axios.get<GetAllResponse>(`${URL}/api/v1/content/getAll`, {
-      withCredentials: true
-    });
-
-    console.log("Response received:", response.data);
-
-    if (response.status !== 200) {
-      throw new Error("Failed to fetch brain entries");
-    }
-
-    const formattedEntries: BrainEntry[] = response.data.data.map(entry => ({
-      id: entry._id,
-      title: entry.title || "Untitled",
-      source: entry.link || "Unknown Source",
-      date: entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : "",
-      excerpt: entry.content?.slice(0, 150) + (entry.content?.length > 150 ? "..." : ""),
-      tags: entry.tags.map(tag => tag.title)
-    }));
-
-    setBrainEntries(formattedEntries);
-
-  } catch (error) {
-    console.error("Error fetching brain entries:", error);
-  }
-
-}
-
-  // Call the function to fetch brain entries when the component mounts
-  useEffect(() => {
-    fetchBrainEntries();
-  }, []);
 
   // Mock data for demonstration
   // const brainEntries = [

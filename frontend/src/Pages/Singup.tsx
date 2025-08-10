@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "../components/authLayout";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input2";
 import { Label } from "../components/ui/label";
 import { Checkbox } from "../components/ui/checkbox";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useToast } from "../hooks/useToast";
+import axios from "axios";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -41,17 +42,40 @@ export default function SignUp() {
     }
     
     setIsLoading(true);
-    
-    // This is where you would typically handle user registration
-    // For now, we'll just simulate a successful registration
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "Account created",
-        description: "Your account has been created successfully",
+    try {
+      const response = await axios.post('http://localhost:3000/api/v1/user/signup', {
+        username: name,
+        email,
+        password
       });
-      navigate("/signin");
-    }, 2000);
+
+      const data = response.data as { status?: number };
+      const status = response.status; 
+      
+      if(!data) {
+        throw new Error("No response data");
+      }
+
+      console.log("Sign up response:", data);
+      if(status === 201) {
+        toast({
+          title: "Account created",
+          description: "Your account has been created successfully",
+        });
+        navigate("/signin");
+      }
+    } catch (error) {
+      let errorMessage = "Failed to create account";
+      
+      
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -64,12 +88,12 @@ export default function SignUp() {
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="name">Full Name</Label>
+          <Label htmlFor="name">Username</Label>
           <div className="relative">
             <Input
               id="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="Vishesh Verma"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="pl-10"

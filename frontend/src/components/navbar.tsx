@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ThemeToggle } from './themeToggle';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,15 @@ export function Navbar() {
           <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How it Works</a>
           <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Testimonials</a>
           <ThemeToggle />
-          <Button variant="default" size="sm">Sign Up Free</Button>
+          <Link to="/dashboard">
+            <Button variant="outline" size="sm">Dashboard</Button>
+          </Link>
+          <Link to="/signin">
+            <Button variant="outline" size="sm">Sign In</Button>
+          </Link>
+          <Link to="/signup">
+            <Button variant="default" size="sm">Sign Up Free</Button>
+          </Link>
         </div>
         
         {/* Mobile Menu Button */}

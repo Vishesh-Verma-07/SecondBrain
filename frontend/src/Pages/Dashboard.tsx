@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Share, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -30,55 +30,119 @@ import { ThemeToggle } from "../components/themeToggle";
 import { NewNoteDialog } from "../components/NewNoteDialog";
 import { NewCollectionDialog } from "../components/NewCollectionDialog";
 import { ShareDialog } from "../components/ShareDialog";
+import axios from "axios";
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [currentShareItem, setCurrentShareItem] = useState({ title: "", type: "note" as "note" | "collection" });
   const [sidebar, setSidebar]  = useState(true);
+  const [brainEntries, setBrainEntries] = useState([] as any[]);
+
+  const URL = import.meta.env.VITE_BACKEND_URL ;
+
+
+  // Fetch brain entries from the backend
+ // Fetch brain entries from the backend
+  interface BrainEntry {
+  id: string | number;
+  title: string;
+  source: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+}
+
+  interface GetAllResponse {
+    status: string;
+    message?: string;
+    data: {
+      _id: string;
+      title: string;
+      link: string;
+      createdAt: string;
+      content: string;
+      tags: { title: string }[];
+    }[];
+  }
+
+
+const fetchBrainEntries = async () => {
+  try {
+    const response = await axios.get<GetAllResponse>(`${URL}/api/v1/content/getAll`, {
+      withCredentials: true
+    });
+
+    console.log("Response received:", response.data);
+
+    if (response.status !== 200) {
+      throw new Error("Failed to fetch brain entries");
+    }
+
+    const formattedEntries: BrainEntry[] = response.data.data.map(entry => ({
+      id: entry._id,
+      title: entry.title || "Untitled",
+      source: entry.link || "Unknown Source",
+      date: entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : "",
+      excerpt: entry.content?.slice(0, 150) + (entry.content?.length > 150 ? "..." : ""),
+      tags: entry.tags.map(tag => tag.title)
+    }));
+
+    setBrainEntries(formattedEntries);
+
+  } catch (error) {
+    console.error("Error fetching brain entries:", error);
+  }
+
+}
+
+  // Call the function to fetch brain entries when the component mounts
+  useEffect(() => {
+    fetchBrainEntries();
+  }, []);
 
   // Mock data for demonstration
-  const brainEntries = [
-    {
-      id: 1,
-      title: "Why AI is revolutionizing note-taking",
-      source: "LinkedIn",
-      date: "2025-04-10",
-      excerpt: "The integration of AI in note-taking apps is changing how we capture and organize information...",
-      tags: ["AI", "Productivity"]
-    },
-    {
-      id: 2,
-      title: "The future of remote work",
-      source: "YouTube",
-      date: "2025-04-08",
-      excerpt: "Remote work has become the new normal for many industries, but what does the future hold?",
-      tags: ["Work", "Trends"]
-    },
-    {
-      id: 3,
-      title: "Daily habits of successful entrepreneurs",
-      source: "WhatsApp",
-      date: "2025-04-05",
-      excerpt: "Most successful entrepreneurs share common daily habits that contribute to their productivity...",
-      tags: ["Success", "Habits"]
-    },
-    {
-      id: 4,
-      title: "How to implement spaced repetition in learning",
-      source: "Article",
-      date: "2025-04-01",
-      excerpt: "Spaced repetition is a learning technique that incorporates increasing intervals of time between review...",
-      tags: ["Learning", "Memory"]
-    }
-  ];
+  // const brainEntries = [
+  //   {
+  //     id: 1,
+  //     title: "Why AI is revolutionizing note-taking",
+  //     source: "LinkedIn",
+  //     date: "2025-04-10",
+  //     excerpt: "The integration of AI in note-taking apps is changing how we capture and organize information...",
+  //     tags: ["AI", "Productivity"]
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "The future of remote work",
+  //     source: "YouTube",
+  //     date: "2025-04-08",
+  //     excerpt: "Remote work has become the new normal for many industries, but what does the future hold?",
+  //     tags: ["Work", "Trends"]
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Daily habits of successful entrepreneurs",
+  //     source: "WhatsApp",
+  //     date: "2025-04-05",
+  //     excerpt: "Most successful entrepreneurs share common daily habits that contribute to their productivity...",
+  //     tags: ["Success", "Habits"]
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "How to implement spaced repetition in learning",
+  //     source: "Article",
+  //     date: "2025-04-01",
+  //     excerpt: "Spaced repetition is a learning technique that incorporates increasing intervals of time between review...",
+  //     tags: ["Learning", "Memory"]
+  //   }
+  // ];
 
   // Filter entries based on search query
   const filteredEntries = searchQuery 
     ? brainEntries.filter(entry => 
         entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         entry.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        entry.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        entry.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       )
     : brainEntries;
 
@@ -233,7 +297,7 @@ export default function Dashboard() {
                     </CardContent>
                     <CardFooter className="flex justify-between pt-0">
                       <div className="flex gap-2">
-                        {entry.tags.map((tag) => (
+                        {entry.tags.map((tag: string) => (
                           <div key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
                             {tag}
                           </div>

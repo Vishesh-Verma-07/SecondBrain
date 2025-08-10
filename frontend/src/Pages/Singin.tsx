@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthLayout } from "../components/authLayout";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input2";
 import { Label } from "../components/ui/label";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useToast } from "../hooks/useToast";
+import axios from "axios";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,11 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const URL = import.meta.env.VITE_BACKEND_URL;
+  if (!URL) {
+    console.error("VITE_BACKEND_URL is not defined in .env file");
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,19 +34,53 @@ export default function SignIn() {
       });
       return;
     }
+
+    console.log("Submitting sign in form with email:", email);
+    console.log("Submitting sign in form with password:", password);
     
     setIsLoading(true);
     
-    // This is where you would typically handle authentication
-    // For now, we'll just simulate a successful login
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await axios.post(`${URL}/api/v1/user/signin`, {
+        email,
+        password
+      }, {withCredentials: true});
+      console.log("Sign in response:", response);
+      
+      const data = response.data as { status?: number };
+      const status = response.status;
+
+
+      
+      if(!data) {
+        throw new Error("No response data");
+      }
+
+      console.log("Sign in response:", data);
+      if(status === 200) {
+        toast({
+          title: "Success",
+          description: "You have been signed in successfully",
+        });
+        
+        navigate("/dashboard");
+      } else {
+        throw new Error("Unexpected response status");
+      }
+      
+    } catch (error) {
+      console.error("Error during sign in:", error);
+      let errorMessage = "Failed to sign in into account";
+      
+      
       toast({
-        title: "Success",
-        description: "You have been signed in successfully",
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
       });
-      navigate("/");
-    }, 2000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

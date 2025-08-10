@@ -26,6 +26,7 @@ import {
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textArea";
 import { useToast } from "../hooks/useToast";
+import axios from "axios";
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title cannot exceed 100 characters."),
@@ -48,29 +49,47 @@ export function NewNoteDialog() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Here you would normally save the note to your backend
-    console.log(values);
-    
-    // Convert tags string to array
-    const tagsArray = values.tags 
-      ? values.tags.split(",").map((tag) => tag.trim())
-      : [];
-    
-    const newNote = {
-      ...values,
-      tags: tagsArray,
-      date: new Date().toISOString().split("T")[0],
-      id: Date.now(),
-    };
-    
-    toast({
-      title: "Note created!",
-      description: `"${values.title}" has been saved to your second brain.`,
-    });
-    
-    form.reset();
-    setIsOpen(false);
+  const URL = import.meta.env.VITE_BACKEND_URL;
+  if (!URL) {
+    console.error("VITE_BACKEND_URL is not defined in .env file");
+    return null; // Prevent rendering if URL is not defined
+  }
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // Convert tags string to array
+      const tagsArray = values.tags 
+        ? values.tags.split(",").map((tag) => tag.trim())
+        : [];
+      
+      const noteData = {
+        ...values,
+        tags: tagsArray,
+      };
+      
+      // Send POST request to backend
+      const response = await axios.post(`${URL}/api/v1/content/create`, noteData, {withCredentials: true});
+      console.log("Note created response:", response.data);
+
+      if (response.status !== 201) {
+        throw new Error("Failed to create note");
+      }
+      
+      toast({
+        title: "Note created!",
+        description: `"${values.title}" has been saved to your second brain.`,
+      });
+      
+      form.reset();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Failed to create note:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create note. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (

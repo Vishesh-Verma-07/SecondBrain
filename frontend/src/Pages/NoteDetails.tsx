@@ -30,7 +30,6 @@ export default function NoteDetails() {
 - Patient flow management
 
 The future implications of these developments are far-reaching, potentially transforming how we approach healthcare delivery and patient care.`,
-    author: "Sarah Parker",
     tags: ["AI", "Healthcare", "Technology", "Research"],
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Example YouTube embed URL
     linkedinPost: "https://www.linkedin.com/embed/feed/update/urn:li:share:7064583498010497024" // Example LinkedIn post embed
@@ -115,14 +114,14 @@ The future implications of these developments are far-reaching, potentially tran
             
             <h1 className="text-4xl font-bold mb-4">{noteData.title}</h1>
             
-            <div className="flex items-center gap-2 mb-6">
+            {/* <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
                 <User className="h-4 w-4" />
               </div>
               <span className="text-muted-foreground">
                 By <span className="text-foreground font-medium">{noteData.author}</span>
               </span>
-            </div>
+            </div> */}
 
             <div className="flex flex-wrap gap-2 mb-8">
               {noteData.tags.map((tag) => (

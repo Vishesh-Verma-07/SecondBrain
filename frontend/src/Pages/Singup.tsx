@@ -7,7 +7,7 @@ import { Label } from "../components/ui/label";
 import { Checkbox } from "../components/ui/checkbox";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useToast } from "../hooks/useToast";
-import axios from "axios";
+import { useSignUp } from "../hooks/auth";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -15,9 +15,9 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { mutate: SignUp, isPending } = useSignUp();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,43 +40,31 @@ export default function SignUp() {
       });
       return;
     }
-    
-    setIsLoading(true);
-    try {
-      const response = await axios.post('http://localhost:3000/api/v1/user/signup', {
+
+    SignUp(
+      {
         username: name,
         email,
         password
-      });
-
-      const data = response.data as { status?: number };
-      const status = response.status; 
-      
-      if(!data) {
-        throw new Error("No response data");
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Success",
+            description: "Account created successfully",
+          });
+          navigate("/signin");
+        },
+        onError: (error) => {
+          toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
       }
-
-      console.log("Sign up response:", data);
-      if(status === 201) {
-        toast({
-          title: "Account created",
-          description: "Your account has been created successfully",
-        });
-        navigate("/signin");
-      }
-    } catch (error) {
-      let errorMessage = "Failed to create account";
-      
-      
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    );
+  }
 
   return (
     <AuthLayout
@@ -168,8 +156,8 @@ export default function SignUp() {
           </label>
         </div>
         
-        <Button type="submit" className="w-full" disabled={isLoading || !acceptTerms}>
-          {isLoading ? "Creating account..." : "Create account"}
+        <Button type="submit" className="w-full" disabled={isPending || !acceptTerms}>
+          {isPending ? "Creating account..." : "Create account"}
         </Button>
       </form>
     </AuthLayout>

@@ -7,20 +7,16 @@ import { Input } from "../components/ui/input2";
 import { Label } from "../components/ui/label";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useToast } from "../hooks/useToast";
-import axios from "axios";
+import { useSignIn } from "../hooks/auth";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const URL = import.meta.env.VITE_BACKEND_URL;
-  if (!URL) {
-    console.error("VITE_BACKEND_URL is not defined in .env file");
-  }
+  const { mutate: SignIn, isPending } = useSignIn();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,52 +31,29 @@ export default function SignIn() {
       return;
     }
 
-    console.log("Submitting sign in form with email:", email);
-    console.log("Submitting sign in form with password:", password);
-    
-    setIsLoading(true);
-    
-    try {
-      const response = await axios.post(`${URL}/api/v1/user/signin`, {
+    SignIn(
+      {
         email,
         password
-      }, {withCredentials: true});
-      console.log("Sign in response:", response);
-      
-      const data = response.data as { status?: number };
-      const status = response.status;
-
-
-      
-      if(!data) {
-        throw new Error("No response data");
+      }, 
+      {
+        onSuccess: () => {
+          toast({
+            title: "Success",
+            description: "You have been signed in successfully",
+          });
+          navigate("/dashboard");
+        },
+        onError: () => {
+          toast({
+            title: "Error",
+            description: "Failed to sign in into account",
+            variant: "destructive",
+          });
+        },
       }
-
-      console.log("Sign in response:", data);
-      if(status === 200) {
-        toast({
-          title: "Success",
-          description: "You have been signed in successfully",
-        });
-        
-        navigate("/dashboard");
-      } else {
-        throw new Error("Unexpected response status");
-      }
-      
-    } catch (error) {
-      console.error("Error during sign in:", error);
-      let errorMessage = "Failed to sign in into account";
-      
-      
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    )    
+    
   };
 
   return (
@@ -145,8 +118,8 @@ export default function SignIn() {
           </div>
         </div>
         
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Signing in..." : "Sign in"}
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Signing in..." : "Sign in"}
         </Button>
       </form>
     </AuthLayout>

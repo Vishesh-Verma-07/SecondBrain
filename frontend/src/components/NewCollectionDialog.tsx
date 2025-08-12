@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FolderPlus, Save } from "lucide-react";
 
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogClose,

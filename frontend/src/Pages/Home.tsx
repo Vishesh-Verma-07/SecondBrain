@@ -1,4 +1,4 @@
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { ThemeProvider } from "../components/ui/themeProvider";
 import { Navbar } from "../components/navbar";
 import { FeatureCard } from "../components/ui/featureCard";

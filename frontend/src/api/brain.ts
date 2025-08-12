@@ -24,7 +24,7 @@ export const fetchBrainEntryDetail = async (id: string): Promise<NoteData> => {
   if (response.status !== 200) {
     throw new Error("Failed to fetch brain entry details");
   }
-
+  // @ts-ignore
   const entry = response.data.data;
 
   let sourceType: NoteData["source"] = "Unknown Source";

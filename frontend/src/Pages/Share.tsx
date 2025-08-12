@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Search, Filter, User } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { ThemeToggle } from "../components/themeToggle";
 import {
   DropdownMenu,

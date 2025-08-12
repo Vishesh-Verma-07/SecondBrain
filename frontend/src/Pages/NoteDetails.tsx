@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, User, Video, MessageSquare } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/Button";
 import { ThemeToggle } from "../components/themeToggle";
 import { useBrainEntryDetail } from "../hooks/useBrainEntries";
 

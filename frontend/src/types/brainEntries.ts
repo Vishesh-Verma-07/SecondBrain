@@ -19,3 +19,14 @@ export interface GetAllResponse {
         tags: { title: string }[];
     }[];
 }
+
+export interface NoteData {
+  id: string;
+  title: string;
+  source: "YouTube" | "LinkedIn" | "Unknown Source";
+  videoUrl?: string;
+  linkedinPost?: string;
+  date: string;
+  content: string;
+  tags: string[];
+}

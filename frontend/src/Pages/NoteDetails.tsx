@@ -1,42 +1,50 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Calendar, User, Linkedin, Youtube } from "lucide-react";
+import { ArrowLeft, Calendar, User, Video, MessageSquare } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { ThemeToggle } from "../components/themeToggle";
+import { useBrainEntryDetail } from "../hooks/useBrainEntries";
 
 export default function NoteDetails() {
-  const { id } = useParams();
+   const { id } = useParams<{ id: string }>();
 
+  // Use a custom hook to fetch the note details
+  if (!id) {
+    return <div className="text-red-500">Note ID is missing</div>;
+  }
+  const { data: noteData, isLoading, error } = useBrainEntryDetail(id);
   // Mock data for demonstration
-  const noteData = {
-    id: parseInt(id || "1"),
-    title: "The Future of AI in Healthcare",
-    source: "YouTube", // Changed to demonstrate video content
-    date: "2025-04-15",
-    content: `Artificial Intelligence is revolutionizing healthcare through improved diagnostics and personalized treatment plans. The integration of AI technologies in healthcare settings has shown promising results in various areas:
+//   const noteData = {
+//     id: parseInt(id || "1"),
+//     title: "The Future of AI in Healthcare",
+//     source: "YouTube", // Changed to demonstrate video content
+//     date: "2025-04-15",
+//     content: `Artificial Intelligence is revolutionizing healthcare through improved diagnostics and personalized treatment plans. The integration of AI technologies in healthcare settings has shown promising results in various areas:
 
-1. Early Disease Detection
-- Advanced image recognition for radiology
-- Pattern recognition in patient data
-- Predictive analytics for patient risk assessment
+// 1. Early Disease Detection
+// - Advanced image recognition for radiology
+// - Pattern recognition in patient data
+// - Predictive analytics for patient risk assessment
 
-2. Treatment Optimization
-- Personalized medicine approaches
-- Drug development acceleration
-- Treatment response prediction
+// 2. Treatment Optimization
+// - Personalized medicine approaches
+// - Drug development acceleration
+// - Treatment response prediction
 
-3. Healthcare Operations
-- Automated administrative tasks
-- Resource allocation optimization
-- Patient flow management
+// 3. Healthcare Operations
+// - Automated administrative tasks
+// - Resource allocation optimization
+// - Patient flow management
 
-The future implications of these developments are far-reaching, potentially transforming how we approach healthcare delivery and patient care.`,
-    tags: ["AI", "Healthcare", "Technology", "Research"],
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Example YouTube embed URL
-    linkedinPost: "https://www.linkedin.com/embed/feed/update/urn:li:share:7064583498010497024" // Example LinkedIn post embed
-  };
+// The future implications of these developments are far-reaching, potentially transforming how we approach healthcare delivery and patient care.`,
+//     tags: ["AI", "Healthcare", "Technology", "Research"],
+//     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Example YouTube embed URL
+//     linkedinPost: "https://www.linkedin.com/embed/feed/update/urn:li:share:7064583498010497024" // Example LinkedIn post embed
+//   };
 
   // Helper function to render content based on source
   const renderContent = () => {
+    if(!noteData)
+        return null;
     switch (noteData.source) {
       case "YouTube":
         return (
@@ -46,7 +54,7 @@ The future implications of these developments are far-reaching, potentially tran
               src={noteData.videoUrl}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            />
+            ></iframe>
           </div>
         );
       case "LinkedIn":
@@ -55,12 +63,10 @@ The future implications of these developments are far-reaching, potentially tran
             <iframe
               className="w-full h-full"
               src={noteData.linkedinPost}
-              frameBorder="0"
               allowFullScreen
-            />
+            ></iframe>
           </div>
         );
-      default:
         return null;
     }
   };
@@ -98,53 +104,55 @@ The future implications of these developments are far-reaching, potentially tran
       </header>
 
       <main className="container mx-auto p-6">
-        <article className="max-w-3xl mx-auto">
-          <div className="mb-8">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="text-sm px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-medium flex items-center gap-2">
-                {noteData.source === "YouTube" && <Youtube className="h-4 w-4" />}
-                {noteData.source === "LinkedIn" && <Linkedin className="h-4 w-4" />}
-                {noteData.source}
+        {noteData && (
+          <article className="max-w-3xl mx-auto">
+            <div className="mb-8">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="text-sm px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-medium flex items-center gap-2">
+                  {noteData.source === "YouTube" && <Video className="h-4 w-4" />}
+                  {noteData.source === "LinkedIn" && <MessageSquare className="h-4 w-4" />}
+                  {noteData.source}
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  {noteData.date}
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                {noteData.date}
+              
+              <h1 className="text-4xl font-bold mb-4">{noteData.title}</h1>
+              
+              {/* <div className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                  <User className="h-4 w-4" />
+                </div>
+                <span className="text-muted-foreground">
+                  By <span className="text-foreground font-medium">{noteData.author}</span>
+                </span>
+              </div> */}
+
+              <div className="flex flex-wrap gap-2 mb-8">
+                {noteData.tags.map((tag) => (
+                  <div
+                    key={tag}
+                    className="text-sm px-3 py-1 rounded-full bg-muted text-muted-foreground font-medium"
+                  >
+                    {tag}
+                  </div>
+                ))}
               </div>
             </div>
-            
-            <h1 className="text-4xl font-bold mb-4">{noteData.title}</h1>
-            
-            {/* <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                <User className="h-4 w-4" />
-              </div>
-              <span className="text-muted-foreground">
-                By <span className="text-foreground font-medium">{noteData.author}</span>
-              </span>
-            </div> */}
 
-            <div className="flex flex-wrap gap-2 mb-8">
-              {noteData.tags.map((tag) => (
-                <div
-                  key={tag}
-                  className="text-sm px-3 py-1 rounded-full bg-muted text-muted-foreground font-medium"
-                >
-                  {tag}
-                </div>
+            {renderContent()}
+
+            <div className="prose prose-gray dark:prose-invert max-w-none">
+              {noteData.content.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="mb-4 text-muted-foreground leading-relaxed">
+                  {paragraph}
+                </p>
               ))}
             </div>
-          </div>
-
-          {renderContent()}
-
-          <div className="prose prose-gray dark:prose-invert max-w-none">
-            {noteData.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="mb-4 text-muted-foreground leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </article>
+          </article>
+        )}
       </main>
     </div>
   );

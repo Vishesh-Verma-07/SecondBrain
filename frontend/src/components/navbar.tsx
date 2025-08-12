@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ThemeToggle } from './themeToggle';
 import { Menu, X } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 import { Link } from 'react-router-dom';
 
 export function Navbar() {

@@ -1,5 +1,5 @@
 import CrossIcon from "../icons/CrossIcon";
-import Button from "./ui/Button2";
+import {Button2} from "./ui/Button2";
 import {Input} from "./ui/InputComponent";
 
 
@@ -18,7 +18,7 @@ export function CreateContentModal({open, onClose} : {open : boolean, onClose: (
                         <Input placeholder = {"link"} onChange={() => {}}/>
                     </div>
                     <div className="flex justify-center">
-                        <Button variant="primary" text="submit" />
+                        <Button2 variant="primary" text="submit" />
 
                     </div>
                 </span>

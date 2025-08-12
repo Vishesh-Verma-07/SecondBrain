@@ -1,4 +1,4 @@
-import Button from '../components/ui/Button2'
+import {Button2} from '../components/ui/Button2'
 import { Card } from '../components/ui/Card2'
 import { CreateContentModal } from '../components/CreateContentModal'
 import { Sidebar } from '../components/SideBar'
@@ -24,7 +24,7 @@ function Dashboard2() {
           }}
         />
         <div className="flex justify-end">
-          <Button
+          <Button2
             onClick={() => {
               setModalOpen(true);
             }}
@@ -33,7 +33,7 @@ function Dashboard2() {
             text="Add Content"
             startIcon={<PlusIcon />}
           />
-          <Button
+          <Button2
             variant="primary"
             size="md"
             text="Add Content"

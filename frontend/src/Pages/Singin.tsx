@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthLayout } from "../components/authLayout";
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/input2";
 import { Label } from "../components/ui/label";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";

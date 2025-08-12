@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Copy, CheckCheck, Mail, Globe2, Lock } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 import {
   Dialog,
   DialogContent,

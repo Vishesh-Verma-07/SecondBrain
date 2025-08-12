@@ -11,7 +11,7 @@ export default function NoteDetails() {
   if (!id) {
     return <div className="text-red-500">Note ID is missing</div>;
   }
-  const { data: noteData, isLoading, error } = useBrainEntryDetail(id);
+  const { data: noteData } = useBrainEntryDetail(id);
   // Mock data for demonstration
 //   const noteData = {
 //     id: parseInt(id || "1"),

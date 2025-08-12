@@ -47,11 +47,11 @@ export function NewCollectionDialog() {
     // Here you would normally save the collection to your backend
     console.log(values);
     
-    const newCollection = {
-      ...values,
-      id: Date.now(),
-      date: new Date().toISOString().split("T")[0],
-    };
+    // const newCollection = {
+    //   ...values,
+    //   id: Date.now(),
+    //   date: new Date().toISOString().split("T")[0],
+    // };
     
     toast({
       title: "Collection created!",

@@ -17,11 +17,26 @@ const ErrorMessages: Record<number, string> = {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        const status = error.response?.status
-        const message = status ? ErrorMessages[status] || 'An unknown error occurred' : "Network error";
-        // Handle the error (e.g., show a notification)
-        console.log("Api Error:", message)
-        return Promise.reject(new Error(message))
+        const status = error.response?.status;
+
+        // Backend message (can be string or object depending on API)
+        const backendMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        null;
+
+        // Fallback to friendly messages if no backend message
+        const friendlyMessage =
+        status && ErrorMessages[status]
+            ? ErrorMessages[status]
+            : "An unknown error occurred";
+
+        // Decide final message (backend > friendly > network)
+        const finalMessage = backendMessage || friendlyMessage || "Network error";
+
+        console.log("Api Error:", finalMessage);
+
+        return Promise.reject(new Error(finalMessage));
     }
 )
 

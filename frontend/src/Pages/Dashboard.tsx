@@ -1,6 +1,6 @@
 
 import {useState } from "react";
-import { Search, Share, Filter } from "lucide-react";
+import { Search, Share, Filter, Trash, Edit } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Input } from "../components/ui/input";
@@ -30,7 +30,9 @@ import { ThemeToggle } from "../components/themeToggle";
 import { NewNoteDialog } from "../components/NewNoteDialog";
 import { NewCollectionDialog } from "../components/NewCollectionDialog";
 import { ShareDialog } from "../components/ShareDialog";
-import { useBrainEntries } from "../hooks/useBrainEntries";
+import { useBrainEntries, useDeleteBrainEntry } from "../hooks/useBrainEntries";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alertDiaglog";
+import { toast } from "@/hooks/useToast";
 
 
 export default function Dashboard() {
@@ -38,8 +40,12 @@ export default function Dashboard() {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [currentShareItem, setCurrentShareItem] = useState({ title: "", type: "note" as "note" | "collection" });
   const [sidebar, setSidebar]  = useState(true);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
+
   
   const {data: brainEntries = [], isLoading, isError, error} = useBrainEntries();
+  const deleteMutation = useDeleteBrainEntry();
 
   if (isLoading) return <p>Loading entries...</p>;
   if (isError) return <p>Error: {error.message}</p>;
@@ -95,6 +101,36 @@ export default function Dashboard() {
     setShareDialogOpen(true);
   };
 
+  const handleDeleteClick = (e: React.MouseEvent, noteId: string) => {
+    e.preventDefault();
+    setNoteToDelete(noteId);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (noteToDelete) {
+      console.log("Deleting note with ID:", noteToDelete);
+
+      deleteMutation.mutate(noteToDelete, {
+        onSuccess: () => {
+          setNoteToDelete(null);
+          setDeleteDialogOpen(false);
+           toast({
+            title: "Success",
+            description: "You have been signed in successfully",
+          });
+        },
+        onError: (error: any) => {
+          console.error("Delete failed:", error.message);
+          toast({
+            title: "Error",
+             description: error?.response?.data?.message || error.message || "Failed to delete note",
+            variant: "destructive",
+          });
+        },
+      });
+    }
+  };
 
   const openSidebar = ()=>{
     setSidebar((prev)=> !prev)
@@ -247,18 +283,46 @@ export default function Dashboard() {
                           </div>
                         ))}
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        title="Share" 
-                        onClick={(e) => {
-                              e.preventDefault();
-                              openShareDialog(entry.title, "note");
+                      <div>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          title="Edit" 
+                          onClick={(e) => {
+                                e.preventDefault();
+                                openShareDialog(entry.title, "note");
+                              }
                             }
-                          }
-                      >
-                        <Share className="h-4 w-4" />
-                      </Button>
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          title="Share" 
+                          onClick={(e) => {
+                                e.preventDefault();
+                                openShareDialog(entry.title, "note");
+                              }
+                            }
+                        >
+                          <Share className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="destructive" 
+                          size="icon" 
+                          title="Delete" 
+                          // className="text-red-400/85"
+                          onClick={(e) => {
+                                e.preventDefault();
+                                handleDeleteClick(e, entry.id.toString());
+                              }
+                            }
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
+
+                      </div>
                     </CardFooter>
                   </Card>
                 </Link>
@@ -288,6 +352,23 @@ export default function Dashboard() {
         itemTitle={currentShareItem.title}
         itemType={currentShareItem.type}
       />
+
+       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your note.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </SidebarProvider>
   );
 }

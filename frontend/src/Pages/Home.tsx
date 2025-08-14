@@ -17,8 +17,26 @@ import {
   BookOpen,
   Layers
 } from "lucide-react";
+import { useEffect } from "react";
+import { useHealthCheck } from "@/hooks/healthCheck";
 
 const Home = () => {
+
+  const { mutate: healthCheck } = useHealthCheck();
+  
+  useEffect(() => {
+  const runHealthCheck = () => {
+    if (document.visibilityState === "visible") {
+      healthCheck();
+    }
+  };
+
+  // Run immediately
+  runHealthCheck();
+
+  const interval = setInterval(runHealthCheck, 14 * 60 * 1000);
+  return () => clearInterval(interval);
+}, [healthCheck]);
   return (
     <ThemeProvider>
       <div className="min-h-screen flex flex-col">

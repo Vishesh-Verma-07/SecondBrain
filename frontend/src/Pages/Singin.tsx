@@ -16,7 +16,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const { mutate: SignIn, isPending } = useSignIn();
+  const { mutate: SignIn, isPending, error } = useSignIn();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,10 +44,10 @@ export default function SignIn() {
           });
           navigate("/dashboard");
         },
-        onError: () => {
+        onError: (err: any) => {
           toast({
             title: "Error",
-            description: "Failed to sign in into account",
+             description: err?.response?.data?.message || err.message || "Failed to sign in",
             variant: "destructive",
           });
         },
@@ -117,6 +117,11 @@ export default function SignIn() {
             </Button>
           </div>
         </div>
+        {error && (
+          <p className="text-sm text-red-500">
+            {error.message || "Something went wrong"}
+          </p>
+        )}
         
         <Button type="submit" className="w-full" disabled={isPending}>
           {isPending ? "Signing in..." : "Sign in"}

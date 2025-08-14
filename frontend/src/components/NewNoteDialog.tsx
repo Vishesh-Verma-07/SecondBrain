@@ -139,7 +139,6 @@ export function NewNoteDialog() {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="source"
@@ -148,6 +147,20 @@ export function NewNoteDialog() {
                     <FormLabel>Source</FormLabel>
                     <FormControl>
                       <Input placeholder="LinkedIn, YouTube, etc." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="source"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Collection</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Separate with commas." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

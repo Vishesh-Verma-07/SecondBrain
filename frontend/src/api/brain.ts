@@ -52,3 +52,11 @@ export const fetchBrainEntryDetail = async (id: string): Promise<NoteData> => {
     tags: entry.tags.map((tag: { title: string }) => tag.title),
   };
 };
+
+export const deleteBrainEntry = async (id: string): Promise<void> => {
+  const response = await api.delete(`/content/deleteContent/${id}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to delete brain entry");
+  }
+};

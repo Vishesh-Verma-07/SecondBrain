@@ -1,7 +1,7 @@
 // src/features/brain/useBrainEntries.ts
-import { fetchBrainEntries, fetchBrainEntryDetail } from "../api/brain";
+import { deleteBrainEntry, fetchBrainEntries, fetchBrainEntryDetail } from "../api/brain";
 import { BrainEntry } from "../types/brainEntries";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { NoteData } from "../types/brainEntries";
 
 export function useBrainEntries() {
@@ -19,5 +19,14 @@ export function useBrainEntryDetail(id: string): UseQueryResult<NoteData> {
     queryFn: () => fetchBrainEntryDetail(id),
     staleTime: 5 * 60 * 1000, // cache 5 mins
     retry: 2, // retry twice on error
+  });
+}
+
+export function useDeleteBrainEntry(){
+  return useMutation<void, Error, string>({
+    mutationFn: deleteBrainEntry,
+    onSuccess: () => {
+      // Invalidate and refetch
+    },
   });
 }

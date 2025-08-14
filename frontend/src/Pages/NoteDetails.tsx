@@ -105,7 +105,7 @@ export default function NoteDetails() {
 
       <main className="container mx-auto p-6">
         {noteData && (
-          <article className="max-w-3xl mx-auto">
+          <article className="max-w-6xl p-8 mx-auto border border-muted rounded-lg shadow-md bg-card">
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <div className="text-sm px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-medium flex items-center gap-2">

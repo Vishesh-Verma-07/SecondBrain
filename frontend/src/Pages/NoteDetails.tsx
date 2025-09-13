@@ -12,6 +12,8 @@ export default function NoteDetails() {
     return <div className="text-red-500">Note ID is missing</div>;
   }
   const { data: noteData } = useBrainEntryDetail(id);
+
+  console.log("Fetched note data:", noteData);
   // Mock data for demonstration
 //   const noteData = {
 //     id: parseInt(id || "1"),
@@ -49,12 +51,17 @@ export default function NoteDetails() {
       case "YouTube":
         return (
           <div className="aspect-video w-full mb-8 rounded-lg overflow-hidden">
-            <iframe
+            {/* <iframe
               className="w-full h-full"
-              src={noteData.videoUrl}
+              src={"https://www.youtube.com/embed?v=CezkrlxFYsw&list=RDMMxH4daEJvaZY&index=5&ab_channel=seventyskye"}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            ></iframe>
+            ></iframe> */}
+            <iframe 
+              className="w-full h-full"
+              src={noteData.link} 
+              title="YouTube video player" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>
           </div>
         );
       case "LinkedIn":

@@ -12,6 +12,7 @@ export const fetchBrainEntries = async (): Promise<any>=> {
       id: entry._id,
       title: entry.title || "Untitled",
       source: entry.link || "Unknown Source",
+      category: entry.category?.name || "Uncategorized",
       date: entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : "",
       excerpt: entry.content?.slice(0, 150) + (entry.content?.length > 150 ? "..." : ""),
       tags: entry.tags.map(tag => tag.title)

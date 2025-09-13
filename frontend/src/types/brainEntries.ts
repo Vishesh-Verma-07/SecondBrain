@@ -2,6 +2,7 @@ export interface BrainEntry {
   id: string | number;
   title: string;
   source: string;
+  category: string;
   date: string;
   excerpt: string;
   tags: string[];
@@ -15,6 +16,7 @@ export interface GetAllResponse {
         title: string;
         link: string;
         createdAt: string;
+        category: { _id: string; name: string };
         content: string;
         tags: { title: string }[];
     }[];

@@ -7,39 +7,58 @@ import { sendResponse } from "../utility/sendResponse";
 
 export const brainShare = async (req: Request, res: Response) => {
     const share = req.body.share;
-    console.log(share);
     
-    if (share) {
-        const existingLink = await LinkModel.findOne({
-            userId: req.userId
-        });
-
-        if (existingLink) {
-            res.json({
-                hash: existingLink.hash
+    try {
+        if (share) {
+            const existingLink = await LinkModel.findOne({
+                userId: req.userId
+            });
+    
+            if (existingLink) {
+                sendResponse(res, 400, {
+                    status: 'error',
+                    message: "Link already exists",
+                    data: {
+                        hash: existingLink.hash
+                    }
+                });
+                return;
+            }
+            
+            const hash = random(14);
+            await LinkModel.create({
+                userId: req.userId,
+                hash
+            });
+            
+            sendResponse(res, 200, {
+                status: 'success',
+                message: "Link created successfully",
+                data: {
+                    hash
+                }
+            });
+            return;
+        } else {
+            await LinkModel.deleteOne({
+                userId: req.userId
+            });
+            
+            sendResponse(res, 200, {
+                status: 'success',
+                message: "Link deleted successfully"
             });
             return;
         }
-        
-        const hash = random(10);
-        await LinkModel.create({
-            userId: req.userId,
-            hash
-        });
-        
-        res.json({
-            hash
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            sendResponse(res, 500, {
+                status: 'error',
+                message: "Internal server error",
+                error: error.message
         });
         return;
-    } else {
-        await LinkModel.deleteOne({
-            userId: req.userId
-        });
-        
-        res.json({
-            message: "link disabled succssfuly"
-        });
-        return;
+        }
     }
 };
 

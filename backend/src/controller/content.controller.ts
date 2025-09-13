@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { ContentModel, TagModel } from "../models";
 
 import { sendResponse } from "../utility/sendResponse";
+import { getYouTubeEmbedUrl } from "../utility/utils";
 
 export const createContent = async (req: Request, res: Response) => {
     const { title, content, link, tags, categoryId } = req.body;
@@ -25,10 +26,13 @@ export const createContent = async (req: Request, res: Response) => {
             tagIds.push(tagDoc._id);
         }
 
+
+        let videoId = getYouTubeEmbedUrl(link);
+
         const newContent = await ContentModel.create({
             title,
             content,
-            link,
+            link: videoId ? `https://www.youtube.com/embed/${videoId}` : link,
             tags: tagIds,
             category: categoryId,
             userId,
@@ -91,7 +95,7 @@ export const getAllContent = async (req: Request, res: Response) => {
     try {
         const content = await ContentModel.find({
             userId,
-        }).populate("userId", "-password").populate("tags", "title");
+        }).populate("userId", "-password").populate("tags", "title").populate("category", "name");
 
         if (!content || content.length === 0) {
             res.status(404).json({

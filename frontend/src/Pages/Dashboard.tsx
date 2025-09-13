@@ -47,7 +47,7 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
 
   
-  const {data: brainEntries = [], isLoading} = useBrainEntries();
+  const {data: brainEntries = []} = useBrainEntries();
   const deleteMutation = useDeleteBrainEntry();
 
   // Filter entries based on search query

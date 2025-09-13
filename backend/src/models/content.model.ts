@@ -19,6 +19,11 @@ const Content = new Schema({
         type: String,
         required: true
     },
+    category: {
+        type: Types.ObjectId,
+        ref: 'categories',
+        required: true
+    },
     summary: String,
 
 

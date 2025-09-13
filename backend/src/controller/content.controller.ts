@@ -5,7 +5,7 @@ import { ContentModel, TagModel } from "../models";
 import { sendResponse } from "../utility/sendResponse";
 
 export const createContent = async (req: Request, res: Response) => {
-    const { title, content, link, tags } = req.body;
+    const { title, content, link, tags, categoryId } = req.body;
     const userId = req.userId;
 
     try {
@@ -30,8 +30,11 @@ export const createContent = async (req: Request, res: Response) => {
             content,
             link,
             tags: tagIds,
+            category: categoryId,
             userId,
         });
+
+        
 
         console.log("New content created:", newContent);
 

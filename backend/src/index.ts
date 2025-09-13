@@ -8,6 +8,8 @@ import { connectDb } from './db/connect'
 import cookieParser from "cookie-parser";
 import cors from 'cors'
 import { HealthCheck } from './controller/healthCheck.controller'
+import { categoriesRouter } from './routes/categories.routes'
+import { TagRouter } from './routes/tags.routes'
 
 
 dotenv.config()
@@ -46,6 +48,8 @@ app.get("/api/v1/health", HealthCheck);
 router.use('/api/v1/user', userRouter);
 router.use('/api/v1/content', contentRouter);
 router.use('/api/v1/brain', brainRouter);
+router.use('/api/v1/categories', categoriesRouter);
+router.use('/api/v1/tags', TagRouter);
 
 app.use(router);
 

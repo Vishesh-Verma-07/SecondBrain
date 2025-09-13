@@ -1,12 +1,14 @@
 import express from 'express';
 import { createTag, getAllTags, getTagById, updateTag, deleteTag } from '../controller/tag.controller';
 
-const router = express.Router();
+const TagRouter = express.Router();
 
-router.post('/createTag', createTag);
-router.get('/getAllTags', getAllTags);
-router.get('/getTagById/:id', getTagById);
-router.put('/updateTag/:id', updateTag);
-router.delete('/deleteTag/:id', deleteTag);
+TagRouter.post('/createTag', createTag);
+TagRouter.get('/getAllTags', getAllTags);
+TagRouter.get('/getTagById/:id', getTagById);
+TagRouter.put('/updateTag/:id', updateTag);
+TagRouter.delete('/deleteTag/:id', deleteTag);
 
-export default router;
+export {
+    TagRouter
+};

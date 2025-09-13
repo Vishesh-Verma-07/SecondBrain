@@ -20,9 +20,9 @@ const User = new Schema({
         type: Types.ObjectId,
         ref: 'contents'
     }], 
-    collections: [{
+    categories: [{
         type: Types.ObjectId,
-        ref: 'collections'
+        ref: 'categories'
     }]
 }, { timestamps: true })
 

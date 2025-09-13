@@ -1,7 +1,7 @@
 import mongoose, { Schema, Types } from "mongoose";
 
 
-const collection = new Schema({
+const category = new Schema({
     name: {
         type: String,
         required: true
@@ -10,9 +10,13 @@ const collection = new Schema({
         type: Types.ObjectId,
         ref: 'users',
         required: true
-    }
+    },
+    contents: [{
+        type: Types.ObjectId,
+        ref: 'contents'
+    }]
 }, { timestamps: true })
 
-const collectionModel = mongoose.model('collections', collection)
+const categoryModel = mongoose.model('categories', category)
 
-export { collectionModel }
+export { categoryModel }

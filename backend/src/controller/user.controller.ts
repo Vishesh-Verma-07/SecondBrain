@@ -123,6 +123,7 @@ export const signin = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
     const userId = req.userId;
+    
 
     if (!userId) {
         res.status(400).json({

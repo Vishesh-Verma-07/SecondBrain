@@ -45,7 +45,7 @@ export default function NoteDetails() {
   const renderContent = () => {
     if(!noteData)
         return null;
-    switch (noteData.source) {
+    switch (noteData.collection) {
       case "YouTube":
         return (
           <div className="aspect-video w-full mb-8 rounded-lg overflow-hidden">
@@ -109,9 +109,9 @@ export default function NoteDetails() {
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-4">
                 <div className="text-sm px-3 py-1 rounded-full bg-secondary text-secondary-foreground font-medium flex items-center gap-2">
-                  {noteData.source === "YouTube" && <Video className="h-4 w-4" />}
-                  {noteData.source === "LinkedIn" && <MessageSquare className="h-4 w-4" />}
-                  {noteData.source}
+                  {noteData.collection === "YouTube" && <Video className="h-4 w-4" />}
+                  {noteData.collection === "LinkedIn" && <MessageSquare className="h-4 w-4" />}
+                  {noteData.collection}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />

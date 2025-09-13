@@ -29,10 +29,14 @@ import { useToast } from "../hooks/useToast";
 import axios from "axios";
 
 const formSchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters.").max(100, "Title cannot exceed 100 characters."),
+  title: z
+    .string()
+    .min(2, "Title must be at least 2 characters.")
+    .max(100, "Title cannot exceed 100 characters."),
   content: z.string().min(10, "Content must be at least 10 characters."),
   source: z.string().optional(),
   tags: z.string().optional(),
+  collection: z.string().optional(),
 });
 
 export function NewNoteDialog() {
@@ -46,40 +50,45 @@ export function NewNoteDialog() {
       content: "",
       source: "",
       tags: "",
+      collection: "miscellaneous", 
     },
   });
 
-  const URL = import.meta.env.VITE_BACKEND_URL;
-  if (!URL) {
-    console.error("VITE_BACKEND_URL is not defined in .env file");
-    return null; // Prevent rendering if URL is not defined
-  }
 
+  const options = [
+    { label: "Miscellaneous", value: "miscellaneous" },
+    { label: "YouTube", value: "youtube" },
+    { label: "LinkedIn", value: "linkedin" },
+  ];
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       // Convert tags string to array
-      const tagsArray = values.tags 
+      const tagsArray = values.tags
         ? values.tags.split(",").map((tag) => tag.trim())
         : [];
-      
+
       const noteData = {
         ...values,
         tags: tagsArray,
       };
-      
+
       // Send POST request to backend
-      const response = await axios.post(`${URL}/api/v1/content/create`, noteData, {withCredentials: true});
+      const response = await axios.post(
+        `${URL}/api/v1/content/create`,
+        noteData,
+        { withCredentials: true }
+      );
       console.log("Note created response:", response.data);
 
       if (response.status !== 201) {
         throw new Error("Failed to create note");
       }
-      
+
       toast({
         title: "Note created!",
         description: `"${values.title}" has been saved to your second brain.`,
       });
-      
+
       form.reset();
       setIsOpen(false);
     } catch (error) {
@@ -129,38 +138,51 @@ export function NewNoteDialog() {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Write your note here..." 
-                      className="min-h-[120px]" 
-                      {...field} 
+                    <Textarea
+                      placeholder="Write your note here..."
+                      className="min-h-[120px]"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-              <FormField
-                control={form.control}
-                name="source"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Source</FormLabel>
-                    <FormControl>
-                      <Input placeholder="LinkedIn, YouTube, etc." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="source"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Source</FormLabel>
+                  <FormControl>
+                    <Input placeholder="LinkedIn, YouTube, etc." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="source"
+                name="collection"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Collection</FormLabel>
+                      {/* <Input placeholder="Separate with commas." {...field} /> */} 
                     <FormControl>
-                      <Input placeholder="Separate with commas." {...field} />
+                      <select
+                        {...field}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        style={{ borderRadius: "0.5rem" }}
+                        >
+                        <option value="">Select collection...</option>
+                        {options.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                        
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -182,7 +204,9 @@ export function NewNoteDialog() {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="button" variant="outline">Cancel</Button>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
               </DialogClose>
               <Button type="submit">
                 <Save className="h-4 w-4 mr-2" />

@@ -44,11 +44,11 @@ export default function Dashboard() {
   const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
 
   
-  const {data: brainEntries = [], isLoading, isError, error} = useBrainEntries();
+  const {data: brainEntries = [], isLoading} = useBrainEntries();
   const deleteMutation = useDeleteBrainEntry();
 
-  if (isLoading) return <p>Loading entries...</p>;
-  if (isError) return <p>Error: {error.message}</p>;
+  // if (isLoading) return <p>Loading entries...</p>;
+  // if (isError) return <p>Error: {error.message}</p>;
 
 
   // Mock data for demonstration

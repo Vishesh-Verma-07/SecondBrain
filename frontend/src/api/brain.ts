@@ -27,30 +27,44 @@ export const fetchBrainEntryDetail = async (id: string): Promise<NoteData> => {
   // @ts-ignore
   const entry = response.data.data;
 
-  let sourceType: NoteData["source"] = "Unknown Source";
+  let collectionType: NoteData["collection"] = "Unknown Source";
   let videoUrl = "";
   let linkedinPost = "";
+  let link = entry.link || "";
 
   if (entry.link?.includes("youtube.com") || entry.link?.includes("youtu.be")) {
-    sourceType = "YouTube";
+    collectionType = "YouTube";
     videoUrl = entry.link;
   } else if (entry.link?.includes("linkedin.com")) {
-    sourceType = "LinkedIn";
+    collectionType = "LinkedIn";
     linkedinPost = entry.link;
+  }
+  else{
+    collectionType = "Unknown Source";
   }
 
   return {
     id: entry._id,
     title: entry.title || "Untitled",
-    source: sourceType,
+    collection: collectionType,
     videoUrl,
     linkedinPost,
+    link,
     date: entry.createdAt
       ? new Date(entry.createdAt).toLocaleDateString()
       : "",
     content: entry.content || "",
     tags: entry.tags.map((tag: { title: string }) => tag.title),
   };
+};
+
+
+export const createBrainEntry = async (noteData: NoteData): Promise<void> => {
+  const response = await api.post("/content/create", noteData);
+
+  if (response.status !== 201) {
+    throw new Error("Failed to create brain entry");
+  }
 };
 
 export const deleteBrainEntry = async (id: string): Promise<void> => {

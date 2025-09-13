@@ -23,9 +23,10 @@ export interface GetAllResponse {
 export interface NoteData {
   id: string;
   title: string;
-  source: "YouTube" | "LinkedIn" | "Unknown Source";
+  collection: "YouTube" | "LinkedIn" | "Unknown Source";
   videoUrl?: string;
   linkedinPost?: string;
+  link?: string;
   date: string;
   content: string;
   tags: string[];

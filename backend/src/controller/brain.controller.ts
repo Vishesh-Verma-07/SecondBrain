@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { ContentModel, LinkModel } from "../models";
 import { random } from "../utility/utils";
 import { sendResponse } from "../utility/sendResponse";
+import { getEmbedding, reduceEmbeddingDim } from "../embed";
+import { getIndex } from "../pinecone";
 
 
 export const brainShare = async (req: Request, res: Response) => {
@@ -95,4 +97,45 @@ export const getBrainByShareLink = async (req: Request, res: Response) => {
         message: "Content fetched successfully",
         data: content
     });
+};
+
+export const brainSearch = async (req: Request, res: Response) => {
+    const userId = req.userId;
+    const {query} = req.body as {query: string};
+
+    try {
+        const index = getIndex();
+        const embedding = await getEmbedding(query);
+        // const reducedEmbedding = reduceEmbeddingDim(embedding, 2048);
+
+        const searchResponse = await index.query({
+            vector: embedding,
+            topK: 5,
+            includeMetadata: true,
+            filter: {
+                userId: userId
+            }
+        })
+
+        const contentIds = searchResponse.matches?.map(match => match.id) || [];
+
+        const contents = await ContentModel.find({
+            _id: { $in: contentIds }
+        })
+            .populate("userId", "-password")
+            .populate("tags", "title")
+            .populate("category", "name");
+
+        sendResponse(res, 200, {
+            status: 'success',
+            message: "Search results fetched successfully",
+            data: contents
+        });
+    } catch (error) {
+        console.log(error);
+        sendResponse(res, 500, {
+            status: 'error',
+            message: "Internal server error"
+        });
+    }
 };

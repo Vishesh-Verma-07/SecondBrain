@@ -4,12 +4,19 @@ import { ContentModel, TagModel } from "../models";
 
 import { sendResponse } from "../utility/sendResponse";
 import { getYouTubeEmbedUrl } from "../utility/utils";
+import { getIndex } from "../pinecone";
+import { getEmbedding, reduceEmbeddingDim } from "../embed";
+import crypto from "crypto";
 
 export const createContent = async (req: Request, res: Response) => {
     const { title, content, link, tags, categoryId } = req.body;
     const userId = req.userId;
 
+
+    
+    
     try {
+
         // Ensure tags is an array
         const tagsArray = Array.isArray(tags) ? tags : tags ? [tags] : [];
 
@@ -37,6 +44,25 @@ export const createContent = async (req: Request, res: Response) => {
             category: categoryId,
             userId,
         });
+
+
+        const index = getIndex();
+        const embedding = await getEmbedding(`${title} ${content} ${link} ${tags ? tags.join(" ") : ""}`);
+        // const embedding = await getEmbedding(`${content}`);
+        // Reduce embedding dimension to 2048
+        // const reducedEmbedding = reduceEmbeddingDim(embedding, 2048);
+        // const id = crypto.randomUUID();
+
+        try {
+            await index.upsert([{
+                id: newContent._id.toString(), 
+                values: embedding,
+                metadata: { userId: String(userId), title, content, link, tags, categoryId }
+            }])
+            console.log("Upserted to Pinecone with ID:", newContent._id.toString());
+        } catch (error) {
+            console.error("Error upserting to Pinecone:", error);
+        }
 
         
 

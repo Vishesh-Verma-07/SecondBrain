@@ -14,6 +14,8 @@
   "dependencies": {
     "@chroma-core/default-embed": "^0.1.8",
     "@google/generative-ai": "^0.24.1",
+    "@langchain/core": "^0.3.77",
+    "@langchain/google-genai": "^0.2.18",
     "@pinecone-database/pinecone": "^6.1.2",
     "@types/cors": "^2.8.17",
     "bcrypt": "^5.1.1",
@@ -24,6 +26,7 @@
     "express": "^4.21.2",
     "fastembed": "^1.14.4",
     "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.3.34",
     "ml-pca": "^4.1.1",
     "mongoose": "^8.10.1",
     "openai": "^5.20.2",

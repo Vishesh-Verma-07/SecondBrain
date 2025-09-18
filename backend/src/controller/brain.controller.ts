@@ -5,6 +5,7 @@ import { random } from "../utility/utils";
 import { sendResponse } from "../utility/sendResponse";
 import { getEmbedding, reduceEmbeddingDim } from "../embed";
 import { getIndex } from "../pinecone";
+import { callLanguageModelAPI } from "../lanchain";
 
 
 export const brainShare = async (req: Request, res: Response) => {
@@ -122,14 +123,24 @@ export const brainSearch = async (req: Request, res: Response) => {
         const contents = await ContentModel.find({
             _id: { $in: contentIds }
         })
-            .populate("userId", "-password")
+            // .populate("userId", "-password")
             .populate("tags", "title")
             .populate("category", "name");
+
+        const context = contents.map(c => {
+            return 'Title: ' + c.title + '\n' + c.content
+        }).join("\n");
+
+
+        const prompt = `Answer the question based on the context below. If the question can't be answered based on the context, say "I don't know"\n\nContext: ${context}\n\nQuestion: ${query}\nAnswer:`;
+
+
+        const apiResponse = await callLanguageModelAPI(prompt);
 
         sendResponse(res, 200, {
             status: 'success',
             message: "Search results fetched successfully",
-            data: contents
+            data: {answer: contents, llmSummary: apiResponse}
         });
     } catch (error) {
         console.log(error);

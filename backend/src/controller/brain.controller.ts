@@ -6,6 +6,7 @@ import { sendResponse } from "../utility/sendResponse";
 import { getEmbedding, reduceEmbeddingDim } from "../embed";
 import { getIndex } from "../pinecone";
 import { callLanguageModelAPI } from "../lanchain";
+import { Types } from "mongoose";
 
 
 export const brainShare = async (req: Request, res: Response) => {
@@ -118,30 +119,73 @@ export const brainSearch = async (req: Request, res: Response) => {
             }
         })
 
-        const contentIds = searchResponse.matches?.map(match => match.id) || [];
+        const MIN_SCORE = 0.25;
+
+        const contentIds =
+            searchResponse.matches
+                ?.filter(match => (match.score ?? 0) >= MIN_SCORE)
+                .map(match => match.id) ?? [];
 
         const contents = await ContentModel.find({
             _id: { $in: contentIds }
         })
             // .populate("userId", "-password")
             .populate("tags", "title")
-            .populate("category", "name");
-
-        const context = contents.map(c => {
-            return 'Title: ' + c.title + '\n' + c.content
-        }).join("\n");
+            .populate<{ category: categoryInterface }>("category");
 
 
-        const prompt = `Answer the question based on the context below. If the question can't be answered based on the context, say "I don't know"\n\nContext: ${context}\n\nQuestion: ${query}\nAnswer:`;
+            
+            if (!contents.length) {
+                return sendResponse(res, 200, {
+                    status: "success",
+                    message: "No relevant content found.",
+                    data: {
+                    answer: [],
+                    llmSummary:
+                        "I couldn't find anything in your Second Brain related to that."
+                }
+            });
+        }
+        
+        
+        const context = contents
+        .map((content, index) => {
+
+                const category = content.category as { name: string } | null;
+
+                return `
+                    Document ${index + 1}
+
+                    Title: ${content.title}
+
+                    Category: ${category?.name ?? "Uncategorized"}
+
+                    Tags: ${
+                        Array.isArray(content.tags)
+                            ? content.tags.map((tag: any) => tag.title).join(", ")
+                            : "None"
+                    }
+
+                    Content: ${content.content}
+                    `;
+                })
+            .join("\n----------------------------------------\n");
 
 
-        const apiResponse = await callLanguageModelAPI(prompt);
+        const llmSummary = await callLanguageModelAPI(
+            context,
+            query
+        );
 
         sendResponse(res, 200, {
-            status: 'success',
+            status: "success",
             message: "Search results fetched successfully",
-            data: {answer: contents, llmSummary: apiResponse}
+            data: {
+                answer: contents,
+                llmSummary
+            }
         });
+
     } catch (error) {
         console.log(error);
         sendResponse(res, 500, {
@@ -150,3 +194,11 @@ export const brainSearch = async (req: Request, res: Response) => {
         });
     }
 };
+
+interface categoryInterface {
+    _id: Types.ObjectId,
+    name: string,
+    user: Types.ObjectId,
+    contents: Types.ObjectId
+}
+

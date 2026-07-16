@@ -1,4 +1,4 @@
-import express from 'express'
+import express from "express"
 import dotenv from 'dotenv'
 import { Router } from 'express'
 import { userRouter } from './routes/user.routes'
@@ -23,6 +23,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:5173',
+  'http://localhost:3001',
   'https://secondbrain-vis.vercel.app'
 ];
 
@@ -55,5 +56,7 @@ app.use(router);
 
 
 connectDb();
-app.listen(3000)
+app.listen(3000, ()=> {
+  console.log("backend started")
+})
 

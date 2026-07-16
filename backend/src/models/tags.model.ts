@@ -4,7 +4,7 @@ import mongoose, { Schema, Types } from "mongoose";
 
 
 const Tag = new Schema({
-    name: { 
+    title: { 
         type: String, 
         required: true
     }

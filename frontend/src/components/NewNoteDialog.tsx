@@ -26,7 +26,7 @@ import {
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textArea";
 import { useToast } from "../hooks/useToast";
-import axios from "axios";
+import api from "../api/axiosInstance";
 
 const formSchema = z.object({
   title: z
@@ -67,17 +67,15 @@ export function NewNoteDialog() {
         ? values.tags.split(",").map((tag) => tag.trim())
         : [];
 
+        console.log("values ye hai ", values);
       const noteData = {
         ...values,
         tags: tagsArray,
+        link: values.source
       };
 
       // Send POST request to backend
-      const response = await axios.post(
-        `${URL}/api/v1/content/create`,
-        noteData,
-        { withCredentials: true }
-      );
+      const response = await api.post("/content/create", noteData);
       console.log("Note created response:", response.data);
 
       if (response.status !== 201) {

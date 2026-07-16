@@ -225,7 +225,7 @@ export default function Dashboard() {
             {/* Brain entries */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredEntries.map((entry) => (
-                <Link to={`/note/${entry.id}`}>
+                <Link to={`/note/${entry.id}`} key={`${entry.id}`}>
                   <Card key={entry.id} className="transition-all hover:shadow-md">
                     <CardHeader className="pb-3">
                       <div className="flex justify-between">

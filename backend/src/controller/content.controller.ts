@@ -12,9 +12,11 @@ export const createContent = async (req: Request, res: Response) => {
     const { title, content, link, tags, categoryId } = req.body;
     const userId = req.userId;
 
-
-    
-    
+    console.log("title", title);
+    console.log("content ", content);
+    console.log("link ", link);
+    console.log("tags", tags);
+    console.log("category id ", categoryId)
     try {
 
         // Ensure tags is an array

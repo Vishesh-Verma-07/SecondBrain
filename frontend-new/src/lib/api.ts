@@ -2,14 +2,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api/v1
 
 type ApiEnvelope<T> = { data?: T; message?: string };
 
+export class ApiError<T = unknown> extends Error {
+  constructor(message: string, public readonly data?: T) { super(message); }
+}
+
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    ...options,
-    credentials: "include",
-    headers: { "Content-Type": "application/json", ...options.headers },
-  });
+  const response = await fetch(`${API_URL}${path}`, { ...options, credentials: "include", headers: { "Content-Type": "application/json", ...options.headers } });
   const payload = (await response.json().catch(() => ({}))) as ApiEnvelope<T>;
-  if (!response.ok) throw new Error(payload.message || "Something went wrong. Please try again.");
+  if (!response.ok) throw new ApiError(payload.message || "Something went wrong. Please try again.", payload.data);
   return (payload.data ?? payload) as T;
 }
 
@@ -19,18 +19,22 @@ export const authApi = {
 };
 
 export const brainApi = {
-  content: () => api<ContentItem[]>("/content/getAll"),
+  content: async () => { try { return await api<ContentItem[]>("/content/getAll"); } catch (error) { if (error instanceof ApiError && /no content found/i.test(error.message)) return []; throw error; } },
   categories: () => api<Category[]>("/categories/getAllCategories"),
   tags: () => api<Tag[]>("/tags/getAllTags"),
   createContent: (body: CreateContent) => api("/content/create", { method: "POST", body: JSON.stringify(body) }),
   deleteContent: (id: string) => api(`/content/deleteContent/${id}`, { method: "DELETE" }),
   contentDetail: (id: string) => api<ContentItem>(`/content/getPostDetail/${id}`),
-  search: (query: string) => api<SearchResult>("/brain/search", { method: "POST", body: JSON.stringify({ query }) }),
+  search: async (query: string): Promise<SearchResult> => {
+    const result = await api<BackendSearchResult>("/brain/search", { method: "POST", body: JSON.stringify({ query }) });
+    return { content: Array.isArray(result.answer) ? result.answer : [], answer: result.llmSummary };
+  },
   share: (share: boolean) => api<{ hash?: string; shareLink?: string }>("/brain/share", { method: "POST", body: JSON.stringify({ share }) }),
 };
 
 export type Tag = { _id: string; name?: string; title?: string };
 export type Category = { _id: string; name: string };
-export type ContentItem = { _id: string; title: string; content?: string; link?: string; tags?: Tag[]; category?: Category; categoryId?: Category | string; createdAt?: string; updatedAt?: string; summary?: string; userId?: { username?: string; email?: string } };
-export type CreateContent = { title: string; content?: string; link?: string; tags?: string[]; categoryId?: string };
-export type SearchResult = { answer?: string; content?: ContentItem[]; results?: ContentItem[] };
+export type ContentItem = { _id: string; title: string; content?: string; link?: string; tags?: Tag[]; category?: Category | string; categoryId?: Category | string; createdAt?: string; updatedAt?: string; summary?: string; userId?: { username?: string; email?: string } };
+export type CreateContent = { title: string; content: string; link?: string; tags?: string[]; categoryId?: string };
+type BackendSearchResult = { answer?: ContentItem[]; llmSummary?: string };
+export type SearchResult = { answer?: string; content?: ContentItem[] };

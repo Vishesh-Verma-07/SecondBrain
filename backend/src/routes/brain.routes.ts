@@ -6,7 +6,7 @@ const brainRouter = Router();
 
 
 brainRouter.post("/share", auth, brainShare)
-brainRouter.get("/getBrain/:shareLink", auth, getBrainByShareLink)
+brainRouter.get("/getBrain/:shareLink", getBrainByShareLink)
 brainRouter.post('/search', auth, brainSearch);
 
 export {

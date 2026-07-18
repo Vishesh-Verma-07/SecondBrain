@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./dashboard.css";
+import "./public-brain.css";
+import "./share-controls.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Second Brain — Remember what matters",
+  title: "Brain Dock — Remember what matters",
   description: "Your personal knowledge space for links, notes, and ideas.",
 };
 

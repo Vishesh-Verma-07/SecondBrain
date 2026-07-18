@@ -28,7 +28,7 @@ export default function LoginPage() {
   return (
     <main className="auth-page">
       <Link className="brand auth-brand" href="/">
-        <i>✦</i> second brain
+        <i>✦</i> Brain Dock
       </Link>
       <section className="auth-card">
         <p className="section-label">WELCOME BACK</p>
@@ -64,7 +64,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="auth-switch">
-          New to Second Brain? <Link href="/signup">Create an account</Link>
+          New to Brain Dock? <Link href="/signup">Create an account</Link>
         </p>
       </section>
     </main>

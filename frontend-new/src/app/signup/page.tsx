@@ -34,7 +34,7 @@ export default function SignupPage() {
   return (
     <main className="auth-page">
       <Link className="brand auth-brand" href="/">
-        <i>✦</i> second brain
+        <i>✦</i> Brain Dock
       </Link>
       <section className="auth-card">
         <p className="section-label">START YOUR COLLECTION</p>

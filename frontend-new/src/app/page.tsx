@@ -20,7 +20,7 @@ export default function Home() {
     <main>
       <nav className="nav wrap">
         <Link className="brand" href="/">
-          <i>✦</i> second brain
+          <i>✦</i> Brain Dock
         </Link>
         <div className="nav-links">
           <a href="#features">Features</a>
@@ -46,12 +46,12 @@ export default function Home() {
           <em>Exactly when you need it.</em>
         </h1>
         <p className="hero-copy">
-          Second Brain is your quiet place for links, notes, and ideas—organised
+          Brain Dock is your quiet place for links, notes, and ideas—organised
           automatically and ready to answer your questions.
         </p>
         <div className="hero-actions">
           <Link href="/signup" className="button">
-            Build your second brain <span>→</span>
+            Build your Brain Dock <span>→</span>
           </Link>
           <a href="#how" className="play">
             <b>▶</b> See how it works
@@ -60,7 +60,7 @@ export default function Home() {
         <div className="app-preview">
           <aside>
             <div className="preview-logo">✦</div>
-            <div className="preview-title">second brain</div>
+            <div className="preview-title">Brain Dock</div>
             <div className="preview-new">＋ New item</div>
             <small>WORKSPACE</small>
             <div className="preview-nav active">
@@ -185,7 +185,7 @@ export default function Home() {
               in seconds.
             </h2>
             <p>
-              Second Brain does the heavy lifting so you can focus on what
+              Brain Dock does the heavy lifting so you can focus on what
               matters: thinking, creating, and growing.
             </p>
             <Link href="/signup" className="button light">
@@ -229,7 +229,7 @@ export default function Home() {
         <div className="faq-list">
           <details open>
             <summary>
-              What can I save in Second Brain?<span>−</span>
+              What can I save in Brain Dock?<span>−</span>
             </summary>
             <p>
               You can save text notes and web links. Supported YouTube links are
@@ -286,9 +286,9 @@ export default function Home() {
       </section>
       <footer className="footer wrap">
         <Link className="brand" href="/">
-          <i>✦</i> second brain
+          <i>✦</i> Brain Dock
         </Link>
-        <p>© 2026 Second Brain. Made for curious minds.</p>
+        <p>© 2026 Brain Dock. Made for curious minds.</p>
         <div>
           <a href="#features">Features</a>
           <a href="#faq">FAQ</a>

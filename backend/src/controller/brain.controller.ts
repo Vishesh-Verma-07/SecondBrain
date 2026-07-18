@@ -85,7 +85,7 @@ export const getBrainByShareLink = async (req: Request, res: Response) => {
 
     const content = await ContentModel.find({
         userId: link.userId
-    }).populate("userId", '-password');
+    }).populate("userId", '-password').populate("tags", "title").populate("category", "name");
 
     if (content.length === 0) {
         sendResponse(res, 404, {

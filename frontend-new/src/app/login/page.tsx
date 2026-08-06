@@ -3,11 +3,13 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authApi } from "@/lib/api";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -48,22 +50,40 @@ export default function LoginPage() {
               placeholder="you@example.com"
             />
           </label>
-          <label>
+          {/* <label>
             Password
             <input
               required
               name="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="*******"
             />
+          </label> */}
+          <label className="block">
+            <span className="font-semibold">Password</span>
+            <div className="relative mt-1 rounded-md border border-gray-300 focus-within:border-black focus-within:ring-1 focus-within:ring-black">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-input"
+                placeholder="*******"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-black"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </label>
-          {error && <p className="form-error">{error}</p>}
+          {error && <p className="form-error mb-2">{error}</p>}
           <button className="button auth-button" disabled={loading}>
             {loading ? "Signing in…" : "Sign in"}
             <span>→</span>
           </button>
         </form>
-        <p className="auth-switch">
+        <p className="auth-switch mt-4">
           New to Brain Dock? <Link href="/signup">Create an account</Link>
         </p>
       </section>

@@ -3,21 +3,25 @@ services:
   frontend:
     build:
       context: ./frontend-new
-      ports: 
-        - "3000:3000"
-      depends_on:
-        - backend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080/api/v1
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - backend
 
   backend:
     build:
       context: ./backend
-      ports:
-        - "8080:8080"
-      environment:
-        NODE_ENV: development
-        MONGO_URI: mongodb://mongo:27017/secondBrain
-      depends_on:
-        - mongo
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: development
+      MONGO_URI: mongodb://mongo:27017/secondBrain
+    depends_on:
+      - mongo
   
   mongo:
     image: mongo:8

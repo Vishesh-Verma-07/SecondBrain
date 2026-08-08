@@ -3,6 +3,7 @@ Further improve the existing frontend while keeping the current architecture, de
 Implement the following enhancements:
 
 ### 1. Public Share Brain Page
+
 Create a proper public sharing experience.
 
 When a shared URL such as:
@@ -12,6 +13,7 @@ http://localhost:3001/brain/:shareId
 is opened, render a dedicated public page instead of a blank or basic view.
 
 The page should include:
+
 - A clean public layout (without the authenticated dashboard sidebar).
 - The Brain Dock branding.
 - Brain title.
@@ -45,6 +47,7 @@ Before generating or updating the share link, provide options such as:
 The UI should make it obvious what is included in the shared link.
 
 Display:
+
 - Generated public URL
 - Copy Link button
 - Open Link button
@@ -74,6 +77,7 @@ Description:
 This action cannot be undone. The selected item will be permanently deleted.
 
 Buttons:
+
 - Cancel
 - Delete (destructive)
 
@@ -110,6 +114,7 @@ Whenever the user performs a search or applies filters:
 Display proper loading feedback.
 
 Examples:
+
 - Skeleton cards
 - Spinner near the search box
 - Loading state while AI search is running

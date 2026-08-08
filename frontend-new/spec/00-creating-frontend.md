@@ -8,6 +8,7 @@ Before writing any code, read the file:
 backend/README.md
 
 Treat it as the source of truth for:
+
 - Features
 - API endpoints
 - Authentication flow
@@ -21,7 +22,8 @@ Understand the backend completely first, then design the frontend around it.
 
 Do NOT assume APIs if they already exist inside the backend README.
 
---------------------------------------------------
+---
+
 Tech Stack
 --------------------------------------------------
 
@@ -35,7 +37,8 @@ Tech Stack
 - shadcn/ui components may be used whenever appropriate
 - Lucide React for icons
 
---------------------------------------------------
+---
+
 Coding Standards
 --------------------------------------------------
 
@@ -74,7 +77,8 @@ Responsive from mobile to desktop.
 
 Accessibility should be considered.
 
---------------------------------------------------
+---
+
 Project Structure
 --------------------------------------------------
 
@@ -83,33 +87,33 @@ Create a professional scalable folder structure similar to production applicatio
 Example:
 
 app/
-    (marketing)/
-    (dashboard)/
-    api/
-    globals.css
-    layout.tsx
-    page.tsx
+(marketing)/
+(dashboard)/
+api/
+globals.css
+layout.tsx
+page.tsx
 
 components/
-    ui/
-    common/
-    layout/
-    landing/
-    dashboard/
-    forms/
+ui/
+common/
+layout/
+landing/
+dashboard/
+forms/
 
 hooks/
 
 lib/
-    axios.ts
-    queryClient.ts
-    utils.ts
+axios.ts
+queryClient.ts
+utils.ts
 
 services/
-    auth.ts
-    content.ts
-    tags.ts
-    user.ts
+auth.ts
+content.ts
+tags.ts
+user.ts
 
 types/
 
@@ -121,7 +125,8 @@ providers/
 
 styles/
 
---------------------------------------------------
+---
+
 UI Theme
 --------------------------------------------------
 
@@ -158,7 +163,8 @@ Avoid flashy gradients everywhere.
 
 Prefer subtle elegance.
 
---------------------------------------------------
+---
+
 Pages Required
 --------------------------------------------------
 
@@ -190,7 +196,7 @@ The copy should explain what the backend actually provides after reading the REA
 
 Do NOT invent features.
 
---------------------------------------------------
+---
 
 2. Authentication
 
@@ -212,7 +218,7 @@ Session handling
 
 Token storage should follow backend requirements.
 
---------------------------------------------------
+---
 
 3. Dashboard
 
@@ -236,7 +242,7 @@ Content area
 
 Responsive sidebar
 
---------------------------------------------------
+---
 
 Dashboard should support every backend feature described inside README.
 
@@ -266,7 +272,8 @@ Anything present in backend README
 
 Implement all supported operations.
 
---------------------------------------------------
+---
+
 Dashboard UI
 --------------------------------------------------
 
@@ -308,7 +315,8 @@ Pagination if required
 
 Infinite scrolling if useful
 
---------------------------------------------------
+---
+
 API Layer
 --------------------------------------------------
 
@@ -328,7 +336,8 @@ Each service should map directly to backend APIs.
 
 Do NOT call axios directly inside components.
 
---------------------------------------------------
+---
+
 State Management
 --------------------------------------------------
 
@@ -342,7 +351,8 @@ Context only when necessary
 
 Avoid unnecessary global state.
 
---------------------------------------------------
+---
+
 Forms
 --------------------------------------------------
 
@@ -360,7 +370,8 @@ Loading buttons
 
 Disabled states
 
---------------------------------------------------
+---
+
 Styling
 --------------------------------------------------
 
@@ -376,7 +387,8 @@ Proper color palette.
 
 Dark mode support (preferred).
 
---------------------------------------------------
+---
+
 Components
 --------------------------------------------------
 
@@ -426,7 +438,8 @@ Avatar
 
 UserMenu
 
---------------------------------------------------
+---
+
 Animations
 --------------------------------------------------
 
@@ -446,7 +459,8 @@ Loading skeletons
 
 Avoid excessive animations.
 
---------------------------------------------------
+---
+
 Responsiveness
 --------------------------------------------------
 
@@ -460,7 +474,8 @@ Laptop
 
 Desktop
 
---------------------------------------------------
+---
+
 Performance
 --------------------------------------------------
 
@@ -478,7 +493,8 @@ Optimized images
 
 Code splitting
 
---------------------------------------------------
+---
+
 Code Quality
 --------------------------------------------------
 
@@ -494,7 +510,8 @@ No repetitive code.
 
 Keep components focused.
 
---------------------------------------------------
+---
+
 Expected Output
 --------------------------------------------------
 

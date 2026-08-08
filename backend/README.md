@@ -117,14 +117,14 @@ npm start
 
 All endpoints are prefixed with `/api/v1` unless noted otherwise. Protected routes require a JWT in the `token` request header or the authentication cookie returned by sign-in.
 
-| Area | Endpoints |
-| --- | --- |
-| Health | `GET /api/v1/health` |
-| Users | `POST /user/signup`, `POST /user/signin`, `GET /user/getUser`, `PUT /user/updateUser`, `DELETE /user/deleteUser` |
-| Content | `POST /content/create`, `GET /content/getAll`, `GET /content/getPostDetail/:id`, `DELETE /content/deleteContent/:id` |
-| Brain | `POST /brain/share`, `GET /brain/getBrain/:shareLink`, `POST /brain/search` |
+| Area       | Endpoints                                                                                                                                                                                                           |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Health     | `GET /api/v1/health`                                                                                                                                                                                                |
+| Users      | `POST /user/signup`, `POST /user/signin`, `GET /user/getUser`, `PUT /user/updateUser`, `DELETE /user/deleteUser`                                                                                                    |
+| Content    | `POST /content/create`, `GET /content/getAll`, `GET /content/getPostDetail/:id`, `DELETE /content/deleteContent/:id`                                                                                                |
+| Brain      | `POST /brain/share`, `GET /brain/getBrain/:shareLink`, `POST /brain/search`                                                                                                                                         |
 | Categories | `POST /categories/createCategory`, `GET /categories/getAllCategories`, `GET /categories/getCategoryById/:categoryId`, `PUT /categories/updateCategory/:categoryId`, `DELETE /categories/deleteCategory/:categoryId` |
-| Tags | `POST /tags/createTag`, `GET /tags/getAllTags`, `GET /tags/getTagById/:id`, `PUT /tags/updateTag/:id`, `DELETE /tags/deleteTag/:id` |
+| Tags       | `POST /tags/createTag`, `GET /tags/getAllTags`, `GET /tags/getTagById/:id`, `PUT /tags/updateTag/:id`, `DELETE /tags/deleteTag/:id`                                                                                 |
 
 ## Example Output
 

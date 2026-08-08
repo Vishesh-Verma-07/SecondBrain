@@ -1,24 +1,21 @@
 import mongoose, { Schema, Types } from "mongoose";
 
-
-const Link = new Schema({
+const Link = new Schema(
+  {
     hash: {
-        type: String, 
-        required: true,
+      type: String,
+      required: true,
     },
     userId: {
-        type: Types.ObjectId, 
-        ref: 'users',
-        required: true,
-        unique: true
-    }
-}, { timestamps: true })
+      type: Types.ObjectId,
+      ref: "users",
+      required: true,
+      unique: true,
+    },
+  },
+  { timestamps: true },
+);
 
+const LinkModel = mongoose.model("links", Link);
 
-const LinkModel = mongoose.model("links", Link)
-
-export {
-    LinkModel, 
-
-}
-
+export { LinkModel };

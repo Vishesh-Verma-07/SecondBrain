@@ -1,21 +1,19 @@
+export function random(len: number) {
+  const options = "dfjkasljnweoangoanweignoiwehagjnweiahgnelgiawegnwleriahtg";
+  let ans = "";
+  for (let i = 0; i < len / 2; i++) {
+    ans += options[Math.floor(Math.random() * len)];
+  }
 
+  const date = Date.now().toString(36);
+  for (let i = 0; i < len / 2; i++) {
+    ans += date[Math.floor(Math.random() * date.length)];
+  }
 
-export function random(len: number){
-    let options = "dfjkasljnweoangoanweignoiwehagjnweiahgnelgiawegnwleriahtg";
-    let ans = "";
-    for(let i = 0; i < len/2; i++){
-        ans += options[Math.floor(Math.random() * len)]
-    }
-
-    let date = Date.now().toString(36);
-    for(let i = 0; i < len/2; i++){
-        ans += date[Math.floor(Math.random() * date.length)]
-    }
-
-    if(ans.length < len){
-        ans = ans.padEnd(len, date[Math.floor(Math.random() * date.length)]);
-    }
-    return ans;
+  if (ans.length < len) {
+    ans = ans.padEnd(len, date[Math.floor(Math.random() * date.length)]);
+  }
+  return ans;
 }
 
 export function getYouTubeEmbedUrl(url: string) {
@@ -49,5 +47,3 @@ export function getYouTubeEmbedUrl(url: string) {
     return null;
   }
 }
-
-

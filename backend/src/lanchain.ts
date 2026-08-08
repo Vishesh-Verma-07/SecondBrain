@@ -1,7 +1,4 @@
-import {
-  ChatGoogleGenerativeAI,
-  GoogleGenerativeAIEmbeddings,
-} from "@langchain/google-genai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { systemPrompt } from "./utility/systemPrompt";
 
@@ -9,7 +6,6 @@ const model = new ChatGoogleGenerativeAI({
   model: "gemini-2.5-flash", // or gemini-pro
   apiKey: process.env.GEMINI_API_KEY,
 });
-
 
 export async function callLanguageModelAPI(
   context: string,

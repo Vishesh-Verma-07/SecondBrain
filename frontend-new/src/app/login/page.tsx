@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { SubmitEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authApi } from "@/lib/api";
 import { Eye, EyeOff } from "lucide-react";
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  async function submit(e: FormEvent<HTMLFormElement>) {
+  async function submit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -63,6 +63,8 @@ export default function LoginPage() {
             <span className="font-semibold">Password</span>
             <div className="relative mt-1 rounded-md border border-gray-300 focus-within:border-black focus-within:ring-1 focus-within:ring-black">
               <input
+                required
+                name="password"
                 type={showPassword ? "text" : "password"}
                 className="form-input"
                 placeholder="*******"

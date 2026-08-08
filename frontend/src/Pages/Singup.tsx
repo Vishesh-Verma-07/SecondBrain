@@ -1,13 +1,13 @@
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "../components/authLayout";
 import { Button } from "../components/ui/Button";
+import { Checkbox } from "../components/ui/checkbox";
 import { Input } from "../components/ui/input2";
 import { Label } from "../components/ui/label";
-import { Checkbox } from "../components/ui/checkbox";
-import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
-import { useToast } from "../hooks/useToast";
 import { useSignUp } from "../hooks/auth";
+import { useToast } from "../hooks/useToast";
 
 export default function SignUp() {
   const [name, setName] = useState("");

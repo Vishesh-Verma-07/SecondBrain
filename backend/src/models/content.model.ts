@@ -1,35 +1,36 @@
-import mongoose, { Schema, Types } from "mongoose"
+import mongoose, { Schema, Types } from "mongoose";
 
-
-const Content = new Schema({
-    title: String, 
+const Content = new Schema(
+  {
+    title: String,
     link: {
-        type: String, 
+      type: String,
     },
-    tags: [{
+    tags: [
+      {
         type: Types.ObjectId,
-        ref: 'Tags'
-    }],
+        ref: "Tags",
+      },
+    ],
     userId: {
-        type: Types.ObjectId,
-        ref: 'users',
-        required: true
-    }, 
+      type: Types.ObjectId,
+      ref: "users",
+      required: true,
+    },
     content: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     category: {
-        type: Types.ObjectId,
-        ref: 'categories',
-        required: true
+      type: Types.ObjectId,
+      ref: "categories",
+      required: true,
     },
     summary: String,
+  },
+  { timestamps: true },
+);
 
+const ContentModel = mongoose.model("contents", Content);
 
-}, { timestamps: true })
-
-
-const ContentModel = mongoose.model("contents", Content)
-
-export { ContentModel }
+export { ContentModel };

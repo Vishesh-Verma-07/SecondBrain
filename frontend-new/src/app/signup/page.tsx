@@ -67,6 +67,8 @@ export default function SignupPage() {
             <span className="font-semibold">Password</span>
             <div className="relative mt-1 rounded-md border border-gray-300 focus-within:border-black focus-within:ring-1 focus-within:ring-black">
               <input
+                required
+                name="password"
                 type={showPassword ? "text" : "password"}
                 className="form-input"
               />

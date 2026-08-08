@@ -1,5 +1,11 @@
 import express from "express";
-import { createCategory, getAllCollections, getCollectionById, updateCollection, deleteCollection } from "../controller/categories.controller";
+import {
+  createCategory,
+  getAllCollections,
+  getCollectionById,
+  updateCollection,
+  deleteCollection,
+} from "../controller/categories.controller";
 import { auth } from "../middlewares/middleware"; // Assuming you have an auth middleware
 
 const categoriesRouter = express.Router();
@@ -14,6 +20,4 @@ categoriesRouter.get("/getCategoryById/:categoryId", auth, getCollectionById);
 categoriesRouter.put("/updateCategory/:categoryId", auth, updateCollection);
 categoriesRouter.delete("/deleteCategory/:categoryId", auth, deleteCollection);
 
-export {
-    categoriesRouter
-};
+export { categoriesRouter };

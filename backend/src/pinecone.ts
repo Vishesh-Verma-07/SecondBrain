@@ -10,6 +10,6 @@ export const pinecone = new Pinecone({
 export const getIndex = () => {
   return pinecone.index(
     process.env.PINECONE_INDEX_NAME as string,
-    process.env.PINECONE_URL as string
+    process.env.PINECONE_URL as string,
   );
 };

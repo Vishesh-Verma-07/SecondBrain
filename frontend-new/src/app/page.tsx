@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { authApi } from "@/lib/api";
 
 const features = [
   [
@@ -16,6 +20,26 @@ const features = [
 ];
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  useEffect(() => {
+    authApi
+      .currentUser()
+      .then(() => setIsLoggedIn(true))
+      .catch(() => setIsLoggedIn(false));
+  }, []);
+
+  async function logout() {
+    setIsLoggingOut(true);
+    try {
+      await authApi.signout();
+      setIsLoggedIn(false);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }
+
   return (
     <main>
       <nav className="nav wrap">
@@ -28,12 +52,30 @@ export default function Home() {
           <a href="#faq">FAQ</a>
         </div>
         <div className="nav-actions">
-          <Link href="/login" className="text-link">
-            Sign in
-          </Link>
-          <Link href="/signup" className="button small">
-            Start for free <span>→</span>
-          </Link>
+          {isLoggedIn === true ? (
+            <>
+              <Link href="/dashboard" className="text-link">
+                Dashboard
+              </Link>
+              <button
+                type="button"
+                className="button small"
+                onClick={logout}
+                disabled={isLoggingOut}
+              >
+                {isLoggingOut ? "Logging out..." : "Log out"}
+              </button>
+            </>
+          ) : isLoggedIn === false ? (
+            <>
+              <Link href="/login" className="text-link">
+                Sign in
+              </Link>
+              <Link href="/signup" className="button small">
+                Start for free <span>→</span>
+              </Link>
+            </>
+          ) : null}
         </div>
       </nav>
       <section className="hero wrap">

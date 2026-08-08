@@ -63,10 +63,13 @@ export const signup = async (req: Request, res: Response) => {
       message: "User created successfully",
       data: user,
     });
-  } catch (error) {
+  } catch (error : unknown) {
+
+    const errorMessage = error instanceof Error ? error.message : "singup failed "
+
     res.status(500).json({
       message: "something went wrong during db entry",
-      error: error.message,
+      error: errorMessage,
     });
   }
 };
@@ -165,10 +168,11 @@ export const getUser = async (req: Request, res: Response) => {
     }
 
     res.json(user);
-  } catch (error) {
-    console.error(error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "getting the user failed"
+
     res.status(500).json({
-      message: "An error occurred while fetching the user",
+      message: errorMessage,
     });
   }
 };

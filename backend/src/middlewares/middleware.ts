@@ -30,7 +30,10 @@ export function auth(req: Request, res: Response, next: NextFunction) {
     } else {
       res.status(403).json({ message: "Invalid credentials" });
     }
-  } catch (error) {
-    res.status(403).json({ message: "Invalid token", error: error.message });
+  } catch (error: unknown) {
+
+    const errorMessage = error instanceof Error ? error.message : "auth failed "
+
+    res.status(403).json({ message: "Invalid token", error: errorMessage });
   }
 }

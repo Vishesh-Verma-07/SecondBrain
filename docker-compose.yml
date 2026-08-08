@@ -1,0 +1,30 @@
+services:
+  
+  frontend:
+    build:
+      context: ./frontend-new
+      ports: 
+        - "3000:3000"
+      depends_on:
+        - backend
+
+  backend:
+    build:
+      context: ./backend
+      ports:
+        - "8080:8080"
+      environment:
+        NODE_ENV: development
+        MONGO_URI: mongodb://mongo:27017/secondBrain
+      depends_on:
+        - mongo
+  
+  mongo:
+    image: mongo:8
+    ports: 
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

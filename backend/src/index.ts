@@ -55,6 +55,7 @@ router.use("/api/v1/tags", TagRouter);
 app.use(router);
 
 connectDb();
-app.listen(3000, () => {
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
   console.log("backend started");
 });

@@ -34,7 +34,7 @@ jobs:
         run: npm Install
 
       - name: Lint
-        runs: npm run lint
+        run: npm run lint
       
       - name: Build
         run: npm run build

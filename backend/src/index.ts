@@ -23,6 +23,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "https://secondbrain.visheshxdevs.in",
+  "https://braindock.visheshxdevs.in"
 ];
 
 app.use(
